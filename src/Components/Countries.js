@@ -1,12 +1,14 @@
 import React from 'react'
 import {useState, useEffect} from 'react'
 import './country.css'
+import Information from './info/Information'
 import ShowCountries from './ShowCountries'
 
 
 const Countries = () => {
 
     const [countries,setCountries] =  useState([])
+    const [selectCountry,setSelectCountry] = useState([])
 
     useEffect(() => {
         fetch('https://restcountries.eu/rest/v2/all')
@@ -17,11 +19,17 @@ const Countries = () => {
      
     }, [])
      //console.log(countries)
-     
+     const addCountryHandler=(countries)=>{
+      /* console.log('added',countries) */
+      const newSelectCountry= [...selectCountry,countries]
+      setSelectCountry(newSelectCountry)
+    }
     return (
-        <div>        
+        <div> <Information info={selectCountry}></Information>     
+              <h1>Finding Countries{countries.length}</h1>
+              <h2>country Selected:{selectCountry.length}</h2>
                 {
-                 countries.map(ctry =><ShowCountries countries={ctry} key={ctry.alpha3Code} />) 
+                 countries.map(ctry =><ShowCountries countries={ctry} addBtn={addCountryHandler} key={ctry.alpha3Code} />) 
                 }
            
         </div>
